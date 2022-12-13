@@ -1,41 +1,22 @@
-import React, { useRef, useEffect, useState } from "react";
-import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
-
-mapboxgl.accessToken =
-  "pk.eyJ1IjoidHVuZXoxMjMiLCJhIjoiY2xibHh3M21nMDN2NDNubWlmZHZtaWx6YSJ9.RuACc8ifZoTmGpOAlbOwYw";
+import React from "react";
 
 const Home = () => {
-  const mapContainer = useRef(null);
-  const map = useRef(null);
-  const [lng, setLng] = useState(-70.9);
-  const [lat, setLat] = useState(42.35);
-  const [zoom, setZoom] = useState(9);
-
-  useEffect(() => {
-    if (map.current) return; // initialize map only once
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v12",
-      center: [lng, lat],
-      zoom: zoom,
-    });
-  });
-
-  useEffect(() => {
-    if (!map.current) return; // wait for map to initialize
-    map.current.on("move", () => {
-      setLng(map.current.getCenter().lng.toFixed(4));
-      setLat(map.current.getCenter().lat.toFixed(4));
-      setZoom(map.current.getZoom().toFixed(2));
-    });
-  });
+  const mapPoints = ["20,20 70,20 120,20 170,20, 50, 70, 200, 100, 1000, 100"];
 
   return (
-    <div>
-      <div className="sidebar">
-        Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
-      </div>
-      <div ref={mapContainer} className="map-container" />
+    <div className="kpn-map-container">
+      <svg className="kpn-map-svg">
+        <polyline class="kpn-map-line" points={mapPoints} />
+        <marker
+          id="kpn-circle-marker"
+          markerWidth="8"
+          markerHeight="8"
+          refX="5"
+          refY="5"
+        >
+          <circle class="" cx="5" cy="5" r="3" />
+        </marker>
+      </svg>
     </div>
   );
 };
